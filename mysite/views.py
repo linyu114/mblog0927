@@ -10,8 +10,19 @@ def homepage(request):
     return render(request, 'index.html', locals())
     
 def showpost(request, slug):
+<<<<<<< HEAD
     post = Post.objects.get(slug=slug)
     return render(request, 'post.html', locals())
+=======
+    try:
+        post = Post.objects.get(slug=slug) 
+        if post != None:
+            return render(request, 'post.html', locals())
+        else:
+            return redirect("/")    
+    except:
+        return redirect("/")
+>>>>>>> df6a38d506e3fc075fea8eef96cc21209d0e407b
     #select * from post where slug=%slug
     
 

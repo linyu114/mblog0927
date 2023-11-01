@@ -4,4 +4,8 @@ Markdown==3.5
 pip==23.2.1
 setuptools==65.5.0
 sqlparse==0.4.4
+<<<<<<< HEAD
 tzdata==2023.3
+=======
+tzdata==2023.3
+>>>>>>> df6a38d506e3fc075fea8eef96cc21209d0e407b

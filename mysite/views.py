@@ -10,27 +10,29 @@ def homepage(request):
     return render(request, 'index.html', locals())
     
 def showpost(request, slug):
-<<<<<<< HEAD
-    post = Post.objects.get(slug=slug)
+    post = Post.objects.get(slug=slug) 
     return render(request, 'post.html', locals())
-=======
-    try:
-        post = Post.objects.get(slug=slug) 
-        if post != None:
-            return render(request, 'post.html', locals())
-        else:
-            return redirect("/")    
-    except:
-        return redirect("/")
->>>>>>> df6a38d506e3fc075fea8eef96cc21209d0e407b
     #select * from post where slug=%slug
     
+import random
+def about(request, num=-1):
+    quotes = ['今日事，今日畢',
+              '要怎麼收穫，先那麼栽',
+              '知識就是力量',
+              '一個人的個性就是他的命運']
+    if num == -1 or num > 4:
+        quote = random.choice(quotes)
+    else:
+        quote = quotes[num]
+    return render(request, 'about.html', locals())   
+
+
 
 '''
-def homepage(request):#名稱自己定義(homepage)
+def homepage(request):
     posts = Post.objects.all() #select * from post
-    post_list = list()
+    post_lists = list()
     for counter, post in enumerate(posts):
-        post_list.append(f'No.{counter}-{post} <br>') #br為網頁換行
-    return HttpResponse(post_list)
+        post_lists.append(f'No. {counter}-{post} <br>')
+    return HttpResponse(post_lists)
 '''

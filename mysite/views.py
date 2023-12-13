@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from mysite.models import Post
+from mysite.models import Post, Comment
 from django.http import HttpResponse
 from datetime import datetime
 from django.shortcuts import redirect
@@ -11,10 +11,20 @@ def homepage(request):
     print(f'hour = {hour}')
     return render(request, 'index.html', locals())
     
+def show_all_posts(request):
+    posts = Post.objects.all()
+    return render(request, 'allposts.html', locals())
+
 def showpost(request, slug):
     post = Post.objects.get(slug=slug) 
     return render(request, 'post.html', locals())
     #select * from post where slug=%slug
+    
+def show_comments(request, post_id):
+    #comments = Comment.objects.filter(post=post_id)
+    comments = Post.objects.get(id=post_id).comment_set.all()
+    return render(request, 'comments.html', locals())
+    
     
 import random
 def about(request, num=-1):
@@ -30,15 +40,16 @@ def about(request, num=-1):
 
 def carlist(request, maker=0):
     car_maker = ['Ford', 'Honda', 'Mazda']
-    car_list = [[ {'model':'Fiesta', 'price': 203500},
-                 {'model':'Focus','price': 605000},
-                 {'model':'Mustang','price': 900000}],
-                [{'model':'Fit', 'price': 450000},
-                 {'model':'City', 'price': 150000},
-                 {'model':'NSX', 'price':1200000}],
-                [{'model':'Mazda3', 'price': 329999},
-                 {'model':'Mazda5', 'price': 603000},
-                 {'model':'Mazda6', 'price':850000}],]
+    car_list = [
+        [{'model':'Fiesta', 'price': 203500},
+            {'model':'Focus','price': 605000}, 
+            {'model':'Mustang','price': 900000}],
+		[{'model':'Fit', 'price': 450000}, 
+		 {'model':'City', 'price': 150000}, 
+		 {'model':'NSX', 'price':1200000}],
+		[{'model':'Mazda3', 'price': 329999}, 
+		 {'model':'Mazda5', 'price': 603000},
+		 {'model':'Mazda6', 'price':850000}],]
 
     maker = maker
     maker_name =  car_maker[maker]
@@ -53,3 +64,24 @@ def homepage(request):
         post_lists.append(f'No. {counter}-{post} <br>')
     return HttpResponse(post_lists)
 '''
+
+def new_post(request):
+    print(f'form method: {request.method}')
+    if request.method == 'GET':
+        return render(request, 'myform_1.html', locals())
+    elif request.method == 'POST':
+        title = request.POST['title']
+        slug = request.POST['slug']
+        content = request.POST['content']
+        post = Post(title=title, slug=slug, body=content)
+        post.save()
+        return render(request, 'myform_1.html', locals())
+    '''
+    try:
+        username = request.GET['user_id']
+        password = request.GET['password']
+        print(f'username:{username}, password:{password}')
+        return render(request, 'myform_1.html', locals())
+    except:
+        return render(request, 'myform_1.html', locals())
+    '''
